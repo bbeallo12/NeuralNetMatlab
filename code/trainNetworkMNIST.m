@@ -6,7 +6,7 @@
 % rng(1345487458);
 format
 
-load('EMNIST\emnist-mnist.mat')
+load('..\EMNIST\emnist-mnist.mat')
 
 trainImagesDigits = double(dataset.train.images)/255.0;
 trainImagesDigits = permute(trainImagesDigits,[2,1]);

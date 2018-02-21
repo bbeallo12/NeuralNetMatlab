@@ -147,7 +147,8 @@ NN2 = neuralNet(Layers2,1);
 NN2.setCats(categorical({'0','1','2','3','4'}));
 NN2.trainNetwork(trainImages,trainLabels,testImages,testLabels,LR,M1,M2,maxEpochs,miniBatchSize)
 NN2.feedForward(testImages)
-full(Layers2{2}.Gene)
+full(Layers2{2}.Layers{1}.Gene)
+full(Layers2{2}.Layers{2}.Gene)
 
 % rng(1345487458);
 % %build structure
