@@ -65,9 +65,9 @@ classdef geneticLayer < layer
                disp('test')
             end
             nn.Mask = [ones(nn.Ins+nn.Dim+nn.Hiddens,1),nn.Gene];
-            nn.W = nn.Mask.*normrnd(0,1/sqrt(nn.Ins+nn.Dim+nn.Hiddens+1),nn.Ins+nn.Dim+nn.Hiddens,nn.Ins+nn.Dim+nn.Hiddens+1);
-            nn.M = sparse(nn.Ins+nn.Dim+nn.Hiddens,nn.Ins+nn.Dim+nn.Hiddens+1);
-            nn.V = sparse(nn.Ins+nn.Dim+nn.Hiddens,nn.Ins+nn.Dim+nn.Hiddens+1);
+            nn.W = nn.Mask.*normrnd(0,1/sqrt(nn.Ins+nn.Dim+nn.Hiddens+1), nn.Ins+nn.Dim+nn.Hiddens,nn.Ins+nn.Dim+nn.Hiddens+1);
+            nn.M = sparse(nn.Ins+nn.Dim+nn.Hiddens, nn.Ins+nn.Dim+nn.Hiddens+1);
+            nn.V = sparse(nn.Ins+nn.Dim+nn.Hiddens, nn.Ins+nn.Dim+nn.Hiddens+1);
             nn.Params = sum(nn.Gene(:));
         end
         function generateGenes(nn)
@@ -121,8 +121,8 @@ classdef geneticLayer < layer
             end
             dE(dE==0) = nn.mx;
             
-            ddDist = sqrt(sum(dE(:).^2))/numel(dE) - nn.dDist;
-            nn.dDist = sqrt(sum(dE(:).^2))/numel(dE);
+            ddDist = sqrt(sum(dE(:).^2))/sum(dE(:)~=0) - nn.dDist;
+            nn.dDist = sqrt(sum(dE(:).^2))/sum(dE(:)~=0);
             nn.Dist = 0.1*nn.Dist + 0.9.*nn.dDist + 0.1.*ddDist;
             
             nn.dE = sparse([zeros(nn.Ins,B);nn.dE;zeros(nn.Hiddens,B)]);
@@ -194,6 +194,7 @@ classdef geneticLayer < layer
             Gene1_nn4 = Gene1_nn2;
             Gene1_nn3(1:crossPoint) = Gene1_nn2(1:crossPoint);
             Gene1_nn4(1:crossPoint) = Gene1_nn1(1:crossPoint);
+            
             Gene1_nn3 = sparse(xor(Gene1_nn3, rand(geneCount,1)<mutRateG1));
             Gene1_nn4 = sparse(xor(Gene1_nn4, rand(geneCount,1)<mutRateG1));
             nn3.Gene = reshape(Gene1_nn3,dims);
@@ -210,6 +211,7 @@ classdef geneticLayer < layer
             Gene2_nn4 = Gene2_nn2;
             Gene2_nn3(1:crossPoint) = Gene2_nn2(1:crossPoint);
             Gene2_nn4(1:crossPoint) = Gene2_nn1(1:crossPoint);
+            
             RN = rand(geneCount,1) < mutRateG2;
             Gene2_nn3(RN) = randi([0,3],sum(RN),1);
             RN = rand(geneCount,1) < mutRateG2;
@@ -242,6 +244,7 @@ classdef geneticLayer < layer
                 end
             end
             
+            % mutate hidden count
             if(rand() < mutRateHid)
 %                 dims = size(nn3.Gene);
 %                 nn3.Gene = [[nn3.Gene;rand(1,dims(2))<mutRateG1],rand(dims(1)+1,1)<mutRateG1];

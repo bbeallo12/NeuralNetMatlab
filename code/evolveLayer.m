@@ -208,7 +208,6 @@ classdef evolveLayer < layer
                 end
             end
         end
-
         function evolve(nn)
             I1 = nn.bestFit(1);
             I2 = zeros(size(I1));

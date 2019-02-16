@@ -1,4 +1,4 @@
-%clear;
+clear;
 clc;
 %D:\GitHub\NeuralNetMatlab
 % function to train network with MNIST data set
